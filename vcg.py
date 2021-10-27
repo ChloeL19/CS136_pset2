@@ -42,10 +42,8 @@ class VCG:
             return ([], [])
 
         (allocation, just_bids) = list(zip(*allocated_bids))
-        print("bids list: {}".format(bids))
-        print("Just bids: {}".format(just_bids))
 
-        def get_bid(b_id):
+        def get_bid(ind):
             """
             Gets the bid based on the bidder's id. Created this function
             because it was not clear whether the bids list was in order.
@@ -53,8 +51,12 @@ class VCG:
             corresponds to a given bidder id, we return the first one.
             - b_id: id of the bidder for which we want the bid
             """
-            bid_vals = list(filter(lambda x: x[0] == b_id, bids))
-            return bid_vals[0][1] # second member of first tuple
+            #bid_vals = list(filter(lambda x: x[0] == b_id, valid_bids))
+            #print("Bids with id {}: {}".format(b_id, bid_vals))
+            if ind >= len(valid_bids):
+                return reserve
+            bid_val = valid_bids[ind][1]
+            return bid_val
 
         # TODO: You just have to implement this function
         def total_payment(k):
@@ -64,33 +66,20 @@ class VCG:
             c = slot_clicks
             n = len(allocation)
 
-            if (k==n):
+            if (k == n):
                 return 0
 
-            try: 
-                valid_bids...
-            except:
-                reserve
-
-
-
-
-
-            if (k == 1):
-                import pdb; pdb.set_trace();
-            # base case: unallocated bidder pays 0
-            if (k >= n):
-                return 0
-            if (k == n - 1):
-                return c[k]*max(reserve, get_bid(k + 1))
             else:
-                return (c[k] - c[k+1])*get_bid(k+1) + total_payment(k + 1)
+                if (k+1 == n):
+                    lower_clicks = 0
+                else:
+                    lower_clicks = c[k+1]
+                return (c[k] - lower_clicks)*get_bid(k+1) + total_payment(k + 1)
 
         def norm(totals):
             """Normalize total payments by the clicks in each slot"""
             return [x_y[0]/x_y[1] for x_y in zip(totals, slot_clicks)]
 
-        print("My total payment outputs: {}".format([total_payment(k) for k in range(len(allocation))]))
         per_click_payments = norm(
             [total_payment(k) for k in range(len(allocation))])
 
