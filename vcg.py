@@ -42,6 +42,8 @@ class VCG:
             return ([], [])
 
         (allocation, just_bids) = list(zip(*allocated_bids))
+        print("bids list: {}".format(bids))
+        print("Just bids: {}".format(just_bids))
 
         def get_bid(b_id):
             """
@@ -61,9 +63,10 @@ class VCG:
             """
             c = slot_clicks
             n = len(allocation)
-
+            if (k == 1):
+                import pdb; pdb.set_trace();
             # base case: unallocated bidder pays 0
-            if (k > n - 1):
+            if (k >= n):
                 return 0
             if (k == n - 1):
                 return c[k]*max(reserve, get_bid(k + 1))
@@ -74,6 +77,7 @@ class VCG:
             """Normalize total payments by the clicks in each slot"""
             return [x_y[0]/x_y[1] for x_y in zip(totals, slot_clicks)]
 
+        print("My total payment outputs: {}".format([total_payment(k) for k in range(len(allocation))]))
         per_click_payments = norm(
             [total_payment(k) for k in range(len(allocation))])
 
