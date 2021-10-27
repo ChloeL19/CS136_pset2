@@ -6,7 +6,7 @@ from gsp import GSP
 from util import argmax_index
 from clochelper import get_clicks
 
-class BBAgent:
+class ClocBB:
     """Balanced bidding agent"""
     def __init__(self, id, value, budget):
         self.id = id
