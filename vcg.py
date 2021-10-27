@@ -52,6 +52,7 @@ class VCG:
             n = len(allocation)
 
             # TODO: Compute the payment and return it.
+            #recursive definition of payment is 10.5
 
         def norm(totals):
             """Normalize total payments by the clicks in each slot"""
