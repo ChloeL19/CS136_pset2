@@ -63,6 +63,9 @@ class BBAgent:
                # ut = 0
             #else: 
                 # VERSION THAT USES COSINE MODEL: ut = (self.value - prev_round.bid[j+1])*get_clicks(t,j)
+            print(self.value)
+            print("prev round bids", prev_round.bids[j+1][1])
+            print("clicks", prev_round.clicks[j])
             ut = (self.value - prev_round.bids[j+1][1])*prev_round.clicks[j] # estimated version
             utilities.append(ut)
         utilities.append(0)
