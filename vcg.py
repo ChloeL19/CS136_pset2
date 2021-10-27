@@ -60,17 +60,15 @@ class VCG:
             Total payment for a bidder in slot k.
             """
             c = slot_clicks
-            #print("slot clicks: {}".format(c))
             n = len(allocation)
 
             # base case: unallocated bidder pays 0
-            # if k == n, the last bidder "beyond" this spot just pays 0 
-            # set the payment to pos_{k}(max(reserve, b_{k + 1}))
-            #if (k == n):
-            
-
-            # TODO: Compute the payment and return it.
-            #recursive definition of payment is 10.5
+            if (k > n - 1):
+                return 0
+            if (k == n - 1):
+                return c[k]*max(reserve, get_bid(k + 1))
+            else:
+                return (c[k] - c[k+1])*get_bid(k+1) + total_payment(k + 1)
 
         def norm(totals):
             """Normalize total payments by the clicks in each slot"""
