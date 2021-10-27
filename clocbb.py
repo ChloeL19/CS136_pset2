@@ -60,10 +60,15 @@ class BBAgent:
         #           (alternatively could use the cosine formula which we've left commented)
 
         for j in range(len(prev_round.bids) - 1):
+
             my_bid = list(filter(lambda id: id[0] == j, self.slot_info(t, history, reserve)))[0][1]
             ut = (self.value - my_bid)*prev_round.clicks[j] # estimated version
             utilities.append(ut)
+            #print(self.value)
+            #print("my_bid", my_bid)
+            #print("clicks",prev_round.clicks[j] )
         utilities.append(0)
+        print(utilities)
         return utilities
 
     def target_slot(self, t, history, reserve):
@@ -110,16 +115,16 @@ class BBAgent:
         ##minimum is their bid 
 
 
-        clicks = list(prev_round.clicks)
-        poseff = [x / sum(clicks) for x in clicks]
+        clicks = prev_round.clicks
+        #poseff = [x / sum(clicks) for x in clicks]
 
         if min_bid >= self.value: 
             bid = self.value 
         elif slot == 0:
             bid = self.value
         else:
-            current_pos_u = poseff[slot]*(self.value-min_bid)
-            bid = -(current_pos_u / (poseff[slot-1]-self.value))
+            current_pos_u = clicks[slot]*(self.value-min_bid)
+            bid = self.value - current_pos_u/clicks[slot-1]
 
 ##estimate of position effect- in equation 5, requires pos- this position effect is something you estimate based on clicks each slot got previous round
 ##history from previous round, that history has clicks variable that tells you number of clicks position got in previous round
