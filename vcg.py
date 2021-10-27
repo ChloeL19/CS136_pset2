@@ -63,6 +63,19 @@ class VCG:
             """
             c = slot_clicks
             n = len(allocation)
+
+            if (k==n):
+                return 0
+
+            try: 
+                valid_bids...
+            except:
+                reserve
+
+
+
+
+
             if (k == 1):
                 import pdb; pdb.set_trace();
             # base case: unallocated bidder pays 0
