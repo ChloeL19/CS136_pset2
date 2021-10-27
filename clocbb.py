@@ -41,6 +41,11 @@ class BBAgent:
 #        sys.stdout.write("slot info: %s\n" % info)
         return info
 
+    def get_bid(self, t, history, reserve, j):
+        '''
+        Find the bid corresponding to bidder id j.
+        '''
+        return list(filter(lambda id: id[0] == j, self.slot_info(t, history, reserve)))[0][1]
 
     def expected_utils(self, t, history, reserve):
         """
@@ -59,16 +64,12 @@ class BBAgent:
         # c^t_j --> estimate based on clicks per slot from previous round
         #           (alternatively could use the cosine formula which we've left commented)
 
-        for j in range(len(prev_round.bids) - 1):
+        for j in range(len(prev_round.clicks)):
 
-            my_bid = list(filter(lambda id: id[0] == j, self.slot_info(t, history, reserve)))[0][1]
+            my_bid = self.get_bid(t, history, reserve, j)
             ut = (self.value - my_bid)*prev_round.clicks[j] # estimated version
             utilities.append(ut)
-            #print(self.value)
-            #print("my_bid", my_bid)
-            #print("clicks",prev_round.clicks[j] )
-        utilities.append(0)
-        print(utilities)
+
         return utilities
 
     def target_slot(self, t, history, reserve):
