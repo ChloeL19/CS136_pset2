@@ -59,12 +59,13 @@ class BBAgent:
         # c^t_j --> estimate based on clicks per slot from previous round
         #           (alternatively could use the cosine formula which we've left commented)
         for j in range(len(prev_round.bids) - 1): # CONFIRM
-            if prev_round.bids[j+1][1] < reserve:
-                ut = 0
-            else: 
+            #if prev_round.bids[j+1][1] < reserve:
+               # ut = 0
+            #else: 
                 # VERSION THAT USES COSINE MODEL: ut = (self.value - prev_round.bid[j+1])*get_clicks(t,j)
-                ut = (self.value - prev_round.bids[j+1][1])*prev_round.clicks[j] # estimated version
+            ut = (self.value - prev_round.bids[j+1][1])*prev_round.clicks[j] # estimated version
             utilities.append(ut)
+        utilities.append(0)
         return utilities
 
     def target_slot(self, t, history, reserve):
@@ -92,10 +93,43 @@ class BBAgent:
 
         prev_round = history.round(t-1)
         (slot, min_bid, max_bid) = self.target_slot(t, history, reserve)
+## what you bid exactly doesn't effect payments conditional on position you end up with 
+## bid effects position, but position effects payment
+## first, look at waht value is and expected payment that I would need to pay to get each of the possible positions (everyone else keep same bids they had last round)
+##would know how much need to pay to get each position 
+##given expected payment from all these diff positions, compute position want to target that gives highest expected util
+## that tells you what position you want, but there is a range of bids to get that position
+## min_bid is minimum amount would need to bid to get a certain position
+## what does slot_info return?
 
-        # TODO: Fill this in.
-        bid = 0  # change this
+        ##tj* (jth highest bid) was min bid --> 
+        ##min_bid is a variable name     
         
+        ##compute price per click payment would be based on what slot we are targetting 
+        #def payment_per_click
+        #history, current reserve, current slot targetting 
+        ##make sure satisfy balanced bidding requirement with minimum bid 
+        ##minimum is their bid 
+
+
+        clicks = list(prev_round.clicks)
+        poseff = [x / sum(clicks) for x in clicks]
+
+        if min_bid >= self.value: 
+            bid = self.value 
+        elif slot == 0:
+            bid = self.value
+        else:
+            current_pos_u = poseff[slot]*(self.value-min_bid)
+            bid = -(current_pos_u / (poseff[slot-1]-self.value))
+
+##estimate of position effect- in equation 5, requires pos- this position effect is something you estimate based on clicks each slot got previous round
+##history from previous round, that history has clicks variable that tells you number of clicks position got in previous round
+## Case 1: minimum payment is greater than value- not trying to get slot- bid truthfully
+## case 3: b) slot you are going for - if that is 0 then going for the first slot and going to bid exactly your value- self.value
+## Case2: in any other case - a) solve for the variable on far right in 5) - use previous rounds history to get pos j *, tj*, pos *- v_i is given as self.value. 
+
+
         return bid
 
     def __repr__(self):
