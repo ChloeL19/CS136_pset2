@@ -43,13 +43,31 @@ class VCG:
 
         (allocation, just_bids) = list(zip(*allocated_bids))
 
+        def get_bid(b_id):
+            """
+            Gets the bid based on the bidder's id. Created this function
+            because it was not clear whether the bids list was in order.
+            Each bidder should only be making one bid, so if more than one bid
+            corresponds to a given bidder id, we return the first one.
+            - b_id: id of the bidder for which we want the bid
+            """
+            bid_vals = list(filter(lambda x: x[0] == b_id, bids))
+            return bid_vals[0][1] # second member of first tuple
+
         # TODO: You just have to implement this function
         def total_payment(k):
             """
             Total payment for a bidder in slot k.
             """
             c = slot_clicks
+            #print("slot clicks: {}".format(c))
             n = len(allocation)
+
+            # base case: unallocated bidder pays 0
+            # if k == n, the last bidder "beyond" this spot just pays 0 
+            # set the payment to pos_{k}(max(reserve, b_{k + 1}))
+            #if (k == n):
+            
 
             # TODO: Compute the payment and return it.
             #recursive definition of payment is 10.5

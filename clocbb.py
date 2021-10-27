@@ -4,6 +4,7 @@ import sys
 
 from gsp import GSP
 from util import argmax_index
+from clochelper import get_clicks
 
 class BBAgent:
     """Balanced bidding agent"""
@@ -49,10 +50,22 @@ class BBAgent:
 
         returns a list of utilities per slot.
         """
-        # TODO: Fill this in
-        utilities = []   # Change this
+        utilities = []
+        prev_round = history.round(t-1)
 
-        
+        # for each position j, utility is v_i - b^t_(j+1) all mult by c^t_j
+        # b^t_(j+1) --> the bid from slot (j+1) in the previous round
+        # v_i --> self.value
+        # c^t_j --> estimate based on clicks per slot from previous round
+        #           (alternatively could use the cosine formula which we've left commented)
+        for j in range(len(prev_round.bids) - 1): # CONFIRM
+            #if prev_round.bids[j+1][1] < reserve:
+               # ut = 0
+            #else: 
+                # VERSION THAT USES COSINE MODEL: ut = (self.value - prev_round.bid[j+1])*get_clicks(t,j)
+            ut = (self.value - prev_round.bids[j+1][1])*prev_round.clicks[j] # estimated version
+            utilities.append(ut)
+        utilities.append(0)
         return utilities
 
     def target_slot(self, t, history, reserve):

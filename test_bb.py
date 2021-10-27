@@ -5,7 +5,7 @@
 # called test_blah and runs them)
 
 from auction import History
-from bbagent import BBAgent
+from clocbb import BBAgent ##change BBagent to class name 
 
 
 def dual_assert(x,y):
@@ -38,7 +38,7 @@ def test_bb():
 
     history = History(bids, occupants, slot_clicks, per_click_payments, slot_payments)
 
-    a1 = BBAgent(1, 8, budget)
+    a1 = BBAgent(1, 8, budget) ##change this
     a2 = BBAgent(2, 10, budget)
     a3 = BBAgent(3, 20, budget)
 
