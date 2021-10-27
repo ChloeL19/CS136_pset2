@@ -58,12 +58,9 @@ class BBAgent:
         # v_i --> self.value
         # c^t_j --> estimate based on clicks per slot from previous round
         #           (alternatively could use the cosine formula which we've left commented)
-        for j in range(len(prev_round.bids) - 1): # CONFIRM
-            #if prev_round.bids[j+1][1] < reserve:
-               # ut = 0
-            #else: 
-                # VERSION THAT USES COSINE MODEL: ut = (self.value - prev_round.bid[j+1])*get_clicks(t,j)
-            ut = (self.value - prev_round.bids[j+1][1])*prev_round.clicks[j] # estimated version
+        for j in range(len(prev_round.bids) - 1):
+            my_bid = list(filter(lambda id: id[0] == j, self.slot_info(t, history, reserve)))[0][1]
+            ut = (self.value - my_bid)*prev_round.clicks[j] # estimated version
             utilities.append(ut)
         utilities.append(0)
         return utilities
